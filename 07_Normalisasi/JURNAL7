@@ -1,0 +1,82 @@
+Untuk jurnal ini yang penting ada Functional Dependency + Normalisasi 1NF → 2NF → 3NF → BCNF.
+
+Functional Dependency (FD)
+
+Dari tabel:
+
+No_Faktur → Kode_Supplier, Nama_Supplier, Tanggal, Jatuh_Tempo, Total
+
+Kode_Supplier → Nama_Supplier
+
+Kode_Barang → Nama_Barang, Harga
+
+(No_Faktur, Kode_Barang) → Qty, Jumlah
+1NF
+
+Hilangkan grup berulang (karena Faktur 998 punya 2 barang).
+
+No_Faktur	Kode_Supplier	Nama_Supplier	Kode_Barang	Nama_Barang	Tanggal	Jatuh_Tempo	Qty	Harga	Jumlah	Total
+799	A02	Asus	R02	Laptop Asus A45VD	02/02/18	03/04/18	10	6000000	60000000	60000000
+998	G01	LG	N01	AC Split ½ PK	08/03/18	08/04/18	5	300000	1500000	5500000
+998	G01	LG	N02	AC Split 1 PK	08/03/18	08/04/18	10	400000	4000000	5500000
+1029	S01	Samsung	M01	Samsung Smart TV 20"	09/10/18	10/11/18	5	4500000	22500000	22500000
+
+Primary Key:
+
+(No_Faktur, Kode_Barang)
+2NF
+
+Pisahkan atribut yang hanya bergantung pada sebagian primary key.
+
+Supplier
+Kode_Supplier	Nama_Supplier
+A02	Asus
+G01	LG
+S01	Samsung
+Barang
+Kode_Barang	Nama_Barang	Harga
+R02	Laptop Asus A45VD	6000000
+N01	AC Split ½ PK	300000
+N02	AC Split 1 PK	400000
+M01	Samsung Smart TV 20"	4500000
+Faktur
+No_Faktur	Kode_Supplier	Tanggal	Jatuh_Tempo	Total
+799	A02	02/02/18	03/04/18	60000000
+998	G01	08/03/18	08/04/18	5500000
+1029	S01	09/10/18	10/11/18	22500000
+Detail_Faktur
+No_Faktur	Kode_Barang	Qty	Jumlah
+799	R02	10	60000000
+998	N01	5	1500000
+998	N02	10	4000000
+1029	M01	5	22500000
+3NF
+
+Hilangkan ketergantungan transitif.
+
+Supplier
+(Kode_Supplier, Nama_Supplier)
+Barang
+(Kode_Barang, Nama_Barang, Harga)
+Faktur
+(No_Faktur, Kode_Supplier, Tanggal, Jatuh_Tempo, Total)
+Detail_Faktur
+(No_Faktur, Kode_Barang, Qty, Jumlah)
+BCNF
+
+Sudah memenuhi BCNF karena seluruh determinant merupakan candidate key:
+
+Kode_Supplier → Nama_Supplier
+
+Kode_Barang → Nama_Barang, Harga
+
+No_Faktur → Kode_Supplier, Tanggal, Jatuh_Tempo, Total
+
+(No_Faktur, Kode_Barang) → Qty, Jumlah
+Kesimpulan
+
+Hasil normalisasi BCNF menghasilkan 4 tabel:
+SUPPLIER
+BARANG
+FAKTUR
+DETAIL_FAKTUR
